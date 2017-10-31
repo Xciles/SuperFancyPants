@@ -1,71 +1,60 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using SuperFancyPants.Business;
-using SuperFancyPants.Domain.Enums;
+using SuperFancyPants.Commands;
 
 namespace SuperFancyPants
 {
     public class Program
     {
+        private static bool _done = false;
+        public static IList<ICommand> Commands { get; private set; }
+
         public static void Main()
         {
-            var done = false;
             var game = new Game();
 
-            game.InitializeAndStartGame();
+            SetupCommands();
 
-            while (!done)
+            game.InitializeAndStartGame();
+            var skipDescribe = false;
+
+            while (!_done)
             {
-                game.DescribeLocation();
+                if (!skipDescribe)
+                {
+                    game.DescribeLocation();
+                }
+                skipDescribe = false;
 
                 if (game.ShouldEnd()) break;
 
                 PrintLambda();
 
                 var input = Console.ReadLine();
+
+                string command = input;
                 string args = "";
+
                 if (input.Contains(" "))
                 {
-                    var splitted = input.Split(" ");
-                    input = splitted[0];
-                    args = splitted[1];
+                    command = input.Substring(0, input.IndexOf(" ", StringComparison.InvariantCulture));
+                    args = input.Substring(input.IndexOf(" ", StringComparison.InvariantCulture) + 1);
                 }
 
-                switch (input.ToLower())
+                var commandInstance = Commands.FirstOrDefault(x => x.Name == command);
+                commandInstance?.Execute(game, args);
+
+                if (commandInstance == null || commandInstance is HelpCommand)
                 {
-                    case "move":
-                        {
-                            EDirection direction;
-                            if (Enum.TryParse<EDirection>(args, true, out direction))
-                            {
-                                game.MoveToDirection(direction);
-                            }
-                            else
-                            {
-                                PrintNotValidDirection();
-                            }
-                            break;
-                        }
-                    case "look":
-                        {
-                            game.LookArround();
-                            break;
-                        }
-                    case "exit":
-                        {
-                            done = true;
-                            break;
-                        }
-                    case "help":
-                        {
-                            PrintHelp();
-                            break;
-                        }
-                    default:
-                        {
-                            PrintCommandNotFound();
-                            PrintHelp();
-                            break;
-                        }
+                    skipDescribe = true;
+                }
+
+                if (commandInstance == null)
+                {
+                    PrintCommandNotFound();
                 }
             }
 
@@ -75,22 +64,23 @@ namespace SuperFancyPants
             Console.ReadKey();
         }
 
+        private static void SetupCommands()
+        {
+            Commands = Assembly.GetExecutingAssembly().GetTypes()
+                            .Where(x => x.GetInterfaces().Contains(typeof(ICommand)))
+                            .Select(x => Activator.CreateInstance(x) as ICommand).ToList();
+        }
+
+        public static void ShouldFinish()
+        {
+            _done = true;
+        }
+
         private static void PrintCommandNotFound()
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Command not found...");
             Console.ForegroundColor = ConsoleColor.White;
-        }
-
-        private static void PrintHelp()
-        {
-            Console.WriteLine("Help:");
-            Console.WriteLine("Available commands are, Move <to>, Help, Exit");
-        }
-
-        private static void PrintNotValidDirection()
-        {
-            Console.WriteLine("Not a valid direction!?");
         }
 
         private static void PrintLambda()
