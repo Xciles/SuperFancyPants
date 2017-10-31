@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using SuperFancyPants.Domain.Enums;
 
-namespace SuperFancyPants
+namespace SuperFancyPants.Domain
 {
     public class Room
     {

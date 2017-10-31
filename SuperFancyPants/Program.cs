@@ -1,4 +1,6 @@
 ﻿using System;
+using SuperFancyPants.Business;
+using SuperFancyPants.Domain.Enums;
 
 namespace SuperFancyPants
 {

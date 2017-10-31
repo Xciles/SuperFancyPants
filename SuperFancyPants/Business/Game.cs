@@ -1,6 +1,8 @@
 ﻿using System;
+using SuperFancyPants.Domain;
+using SuperFancyPants.Domain.Enums;
 
-namespace SuperFancyPants
+namespace SuperFancyPants.Business
 {
     public class Game
     {

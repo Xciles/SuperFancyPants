@@ -1,4 +1,4 @@
-﻿namespace SuperFancyPants
+﻿namespace SuperFancyPants.Domain.Enums
 {
     public enum EDirection
     {
