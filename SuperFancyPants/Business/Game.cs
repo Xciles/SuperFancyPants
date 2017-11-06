@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using SuperFancyPants.Domain;
 using SuperFancyPants.Domain.Enums;
 
@@ -42,6 +44,19 @@ namespace SuperFancyPants.Business
             diner.ConnectedRooms.Add(EDirection.North, kitchen);
 
             _currentRoom = entrance;
+
+            livingRoom.SomeoneEntered += LivingRoomOnSomeoneEntered;
+        }
+
+        private void LivingRoomOnSomeoneEntered(object sender, EventArgs eventArgs)
+        {
+            Thread.Sleep(1000);
+            Task.Factory.StartNew(async () =>
+            {
+                await Task.Delay(1000);
+
+                Console.WriteLine("Je bent naar de living room genavigeerd!");
+            });
         }
 
         private void Initialize()
@@ -134,6 +149,7 @@ namespace SuperFancyPants.Business
             if (_currentRoom.ConnectedRooms.ContainsKey(direction))
             {
                 _currentRoom = _currentRoom.ConnectedRooms[direction];
+                _currentRoom.MovedToRoom();
             }
             else
             {

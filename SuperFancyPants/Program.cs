@@ -67,12 +67,21 @@ namespace SuperFancyPants
         private static void SetupCommands()
         {
             Commands = Assembly.GetExecutingAssembly().GetTypes()
-                            .Where(x => x.GetInterfaces().Contains(typeof(ICommand)))
-                            .Select(x => Activator.CreateInstance(x) as ICommand).ToList();
+                         .Where(x => x.GetInterfaces().Contains(typeof(ICommand)))
+                         .Select(x => Activator.CreateInstance(x) as ICommand).ToList();
+
+
+            var ty = typeof(ICommand);
+
+            //var bla = (ty)Activator.CreateInstance(ty);
         }
 
         public static void ShouldFinish()
         {
+            dynamic bla = default(dynamic);
+
+            bla.Test = "";
+
             _done = true;
         }
 

@@ -1,0 +1,32 @@
+﻿<Page x:Class="UwpTheading.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:UwpTheading"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Button x:Name="InfoButton"
+                Content="Button"
+                Margin="80"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Click="InfoButton_Click" />
+        
+        <Button x:Name="InfoButton2"
+                Content="Buttona"
+                Margin="80"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Click="InfoButton2_Click" />
+        
+        <TextBlock x:Name="Text" />
+
+        <ListBox x:Name="ListBox"
+                 Height="500"
+                 Background="Bisque"
+                 Margin="60" />
+
+    </Grid>
+</Page>

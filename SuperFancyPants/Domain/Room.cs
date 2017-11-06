@@ -11,6 +11,8 @@ namespace SuperFancyPants.Domain
         public string Description { get; set; }
         public bool Finish { get; set; }
 
+        public event EventHandler SomeoneEntered;
+
         public void PrintInfo()
         {
             Console.WriteLine($"Currently in {Name}");
@@ -21,6 +23,20 @@ namespace SuperFancyPants.Domain
                 Console.Write($"{connectedRoomsKey:G} ");
             }
             Console.Write(Environment.NewLine);
+        }
+
+        public void MovedToRoom()
+        {
+            InvokeSomeoneEntered();
+        }
+
+        private void InvokeSomeoneEntered()
+        {
+            var handler = SomeoneEntered;
+            if (handler != null)
+            {
+                handler(this, EventArgs.Empty);
+            }
         }
     }
 }
