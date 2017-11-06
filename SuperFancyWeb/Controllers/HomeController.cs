@@ -12,6 +12,27 @@ namespace SuperFancyWeb.Controllers
     {
         public IActionResult Index()
         {
+            var x = new { Name = "Hans", Ammount = 400 };
+
+            var list = new List<Person>()
+            {
+                new Person() { Age = 1, Name = "Test", Description = "Omschrijving", Ammount = 400},
+                new Person() { Age = 1, Name = "Test", Description = "Omschrijving", Ammount = 400},
+                new Person() { Age = 1, Name = "Test", Description = "Omschrijving", Ammount = 400},
+                new Person() { Age = 1, Name = "Test", Description = "Omschrijving", Ammount = 400},
+                new Person() { Age = 1, Name = "Test", Description = "Omschrijving", Ammount = 400},
+            };
+
+            var result = from person in list
+                         select new { person.Name, person.Age };
+
+            foreach (var person in result)
+            {
+            }
+
+
+
+
             return View();
         }
 
