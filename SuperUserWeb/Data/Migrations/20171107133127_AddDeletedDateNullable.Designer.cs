@@ -12,9 +12,10 @@ using System;
 namespace SuperUserWeb.Data.Migrations
 {
     [DbContext(typeof(FancyDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171107133127_AddDeletedDateNullable")]
+    partial class AddDeletedDateNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

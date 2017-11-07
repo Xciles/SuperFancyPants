@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SuperUserWeb.Business;
 using SuperUserWeb.Data;
-using SuperUserWeb.Models;
+using SuperUserWeb.Domain;
 using SuperUserWeb.Services;
 
 namespace SuperUserWeb
@@ -29,9 +28,26 @@ namespace SuperUserWeb
             services.AddDbContext<FancyDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<UserAccount, IdentityRole>()
+            services.AddIdentity<UserAccount, IdentityRole>(x =>
+                {
+                    x.Password.RequireDigit = false;
+                    x.Password.RequireNonAlphanumeric = false;
+                    x.Password.RequireUppercase = false;
+                    x.Password.RequireLowercase = false;
+                })
                 .AddEntityFrameworkStores<FancyDbContext>()
+                .AddRoleStore<RoleStore<IdentityRole, FancyDbContext, string>>()
+                .AddRoleManager<FancyRoleManager>()
                 .AddDefaultTokenProviders();
+
+            // Setup options with DI
+            services.AddOptions();
+
+            // Configure MyOptions using code
+            //services.Configure<NetOptions>(myOptions =>
+            //{
+            //    myOptions.NetStorage = Configuration.GetConnectionString("NetStorage");
+            //});
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
@@ -40,7 +56,7 @@ namespace SuperUserWeb
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -63,6 +79,8 @@ namespace SuperUserWeb
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            Seeder.Initialize(serviceProvider);
         }
     }
 }

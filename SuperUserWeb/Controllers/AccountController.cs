@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SuperUserWeb.Domain;
 using SuperUserWeb.Models;
 using SuperUserWeb.Models.AccountViewModels;
 using SuperUserWeb.Services;

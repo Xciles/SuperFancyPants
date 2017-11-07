@@ -12,9 +12,10 @@ using System;
 namespace SuperUserWeb.Data.Migrations
 {
     [DbContext(typeof(FancyDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171107131645_AddRoom")]
+    partial class AddRoom
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -136,7 +137,7 @@ namespace SuperUserWeb.Data.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<DateTime?>("DeletedDate");
+                    b.Property<DateTime>("DeletedDate");
 
                     b.Property<string>("Description");
 
@@ -158,7 +159,7 @@ namespace SuperUserWeb.Data.Migrations
 
                     b.HasIndex("UserAccountId");
 
-                    b.ToTable("Bookings");
+                    b.ToTable("Booking");
                 });
 
             modelBuilder.Entity("SuperUserWeb.Domain.Room", b =>
@@ -168,7 +169,7 @@ namespace SuperUserWeb.Data.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<DateTime?>("DeletedDate");
+                    b.Property<DateTime>("DeletedDate");
 
                     b.Property<string>("Description");
 

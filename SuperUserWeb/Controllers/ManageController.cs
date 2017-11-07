@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SuperUserWeb.Domain;
 using SuperUserWeb.Models;
 using SuperUserWeb.Models.ManageViewModels;
 using SuperUserWeb.Services;
