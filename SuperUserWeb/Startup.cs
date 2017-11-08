@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SuperUserWeb.Business;
+using SuperUserWeb.Business.Interfaces;
 using SuperUserWeb.Data;
 using SuperUserWeb.Domain;
 using SuperUserWeb.Services;
@@ -52,6 +53,8 @@ namespace SuperUserWeb
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
+            services.AddTransient<IRoom, Business.Room>();
+
             services.AddMvc();
         }
 
@@ -80,7 +83,8 @@ namespace SuperUserWeb
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            Seeder.Initialize(serviceProvider);
+            app.Initialize(serviceProvider);
+            //Seeder.Initialize(serviceProvider);
         }
     }
 }

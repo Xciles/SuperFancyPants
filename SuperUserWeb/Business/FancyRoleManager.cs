@@ -6,7 +6,8 @@ namespace SuperUserWeb.Business
 {
     public class FancyRoleManager : RoleManager<IdentityRole>
     {
-        public FancyRoleManager(IRoleStore<IdentityRole> store,
+        public FancyRoleManager(
+            IRoleStore<IdentityRole> store,
             IEnumerable<IRoleValidator<IdentityRole>> roleValidators,
             ILookupNormalizer keyNormalizer,
             IdentityErrorDescriber errors,

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SuperUserWeb.Business;
 using SuperUserWeb.Domain;
 using SuperUserWeb.Models;
 using SuperUserWeb.Models.AccountViewModels;
@@ -22,18 +23,21 @@ namespace SuperUserWeb.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<UserAccount> _userManager;
+        private readonly FancyRoleManager _roleManager;
         private readonly SignInManager<UserAccount> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
 
         public AccountController(
             UserManager<UserAccount> userManager,
+            FancyRoleManager roleManager,
             SignInManager<UserAccount> signInManager,
             IEmailSender emailSender,
             ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
             _emailSender = emailSender;
             _logger = logger;
         }
@@ -230,6 +234,8 @@ namespace SuperUserWeb.Controllers
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+
+                    await _userManager.AddToRoleAsync(user, "Guest");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");

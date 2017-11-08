@@ -1,20 +1,26 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SuperUserWeb.Business;
+using SuperUserWeb.Business.Interfaces;
 using SuperUserWeb.Data;
-using SuperUserWeb.Domain;
 using SuperUserWeb.Domain.Enums;
+using Room = SuperUserWeb.Domain.Room;
 
 namespace SuperUserWeb.Controllers
 {
+    [Authorize(Roles = "Admin, Receptionist")]
     public class RoomController : Controller
     {
+        private readonly IRoom _room;
         private readonly FancyDbContext _context;
 
-        public RoomController(FancyDbContext context)
+        public RoomController(FancyDbContext context, IRoom room)
         {
+            _room = room;
             _context = context;
         }
 
@@ -56,12 +62,8 @@ namespace SuperUserWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                room.CreatedDate = DateTime.UtcNow;
-                room.ModifiedDate = DateTime.UtcNow;
-                room.State = EState.Active;
+                await _room.CreatePost(room);
 
-                _context.Add(room);
-                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(room);

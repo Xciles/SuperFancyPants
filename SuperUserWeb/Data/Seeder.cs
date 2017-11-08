@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using SuperUserWeb.Domain;
@@ -7,7 +8,7 @@ namespace SuperUserWeb.Data
 {
     public static class Seeder
     {
-        public static void Initialize(IServiceProvider provider)
+        public static void Initialize(this IApplicationBuilder app, IServiceProvider provider)
         {
             var userManager = provider.GetRequiredService<UserManager<UserAccount>>();
             var roleManager = provider.GetRequiredService<RoleManager<IdentityRole>>();

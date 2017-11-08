@@ -1,0 +1,17 @@
+﻿@using SuperUserWeb.Domain
+@inject SignInManager<UserAccount> SignInManager
+
+
+<ul class="nav navbar-nav">
+    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+    <li><a asp-area="" asp-controller="Room" asp-action="Index">Rooms</a></li>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        if (User.IsInRole("Admin"))
+        {
+            <li><a asp-area="" asp-controller="UserAccount" asp-action="Index">UserAccounts</a></li>
+        }
+    }
+</ul>
