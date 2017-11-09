@@ -17,11 +17,11 @@ namespace SuperUserWeb.Controllers
     public class UserAccountController : Controller
     {
         private readonly UserManager<UserAccount> _userManager;
-        private readonly FancyRoleManager _roleManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly FancyDbContext _context;
         private readonly SignInManager<UserAccount> _signInManager;
 
-        public UserAccountController(FancyDbContext context, UserManager<UserAccount> userManager, FancyRoleManager roleManager, SignInManager<UserAccount> signInManager)
+        public UserAccountController(FancyDbContext context, UserManager<UserAccount> userManager, RoleManager<IdentityRole> roleManager, SignInManager<UserAccount> signInManager)
         {
             _context = context;
             _userManager = userManager;

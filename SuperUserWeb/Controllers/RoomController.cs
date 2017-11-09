@@ -2,8 +2,11 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using SuperUserWeb.Business;
 using SuperUserWeb.Business.Interfaces;
 using SuperUserWeb.Data;
@@ -17,16 +20,32 @@ namespace SuperUserWeb.Controllers
     {
         private readonly IRoom _room;
         private readonly FancyDbContext _context;
+        private readonly IStringLocalizer<RoomController> _localizer;
+        private readonly ILogger<RoomController> _logger;
 
-        public RoomController(FancyDbContext context, IRoom room)
+        public RoomController(FancyDbContext context, IRoom room, IStringLocalizer<RoomController> localizer,
+            ILogger<RoomController> logger)
         {
             _room = room;
             _context = context;
+            
+            _localizer = localizer;
+            _logger = logger;
         }
 
         // GET: Room
         public async Task<IActionResult> Index()
         {
+            _logger.LogInformation(_localizer["Hello"]);
+
+            var requestCultureFeature = HttpContext.Features.Get<IRequestCultureFeature>();
+            var requestCulture = requestCultureFeature.RequestCulture;
+            var loc = _localizer.WithCulture(requestCulture.Culture);
+            var hello = loc["Hello"];
+
+            _logger.LogInformation(hello);
+
+
             return View(await _context.Rooms.Where(x=> x.State == EState.Active).ToListAsync());
         }
 

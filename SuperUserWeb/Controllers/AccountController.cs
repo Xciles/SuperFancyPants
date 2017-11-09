@@ -23,21 +23,18 @@ namespace SuperUserWeb.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<UserAccount> _userManager;
-        private readonly FancyRoleManager _roleManager;
         private readonly SignInManager<UserAccount> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
 
         public AccountController(
             UserManager<UserAccount> userManager,
-            FancyRoleManager roleManager,
             SignInManager<UserAccount> signInManager,
             IEmailSender emailSender,
             ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _roleManager = roleManager;
             _emailSender = emailSender;
             _logger = logger;
         }

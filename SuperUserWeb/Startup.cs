@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SuperUserWeb.Business;
@@ -26,6 +29,12 @@ namespace SuperUserWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLocalization(o =>
+            {
+                // We will put our translations in a folder called Resources
+                o.ResourcesPath = "Resources";
+            });
+
             services.AddDbContext<FancyDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -37,8 +46,6 @@ namespace SuperUserWeb
                     x.Password.RequireLowercase = false;
                 })
                 .AddEntityFrameworkStores<FancyDbContext>()
-                .AddRoleStore<RoleStore<IdentityRole, FancyDbContext, string>>()
-                .AddRoleManager<FancyRoleManager>()
                 .AddDefaultTokenProviders();
 
             // Setup options with DI
@@ -75,6 +82,20 @@ namespace SuperUserWeb
             app.UseStaticFiles();
 
             app.UseAuthentication();
+
+            IList<CultureInfo> supportedCultures = new List<CultureInfo>
+            {
+                new CultureInfo("en-US"),
+                new CultureInfo("nl-NL"),
+            };
+
+            var options = new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en-US"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
+            };
+            app.UseRequestLocalization(options);
 
             app.UseMvc(routes =>
             {

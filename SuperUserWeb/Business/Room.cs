@@ -27,5 +27,10 @@ namespace SuperUserWeb.Business
             _context.Set<Domain.Room>().Add(room);
             await _context.SaveChangesAsync();
         }
+
+        public Task<IList<Domain.Room>> ToList()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
