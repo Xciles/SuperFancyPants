@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ using SuperUserWeb.Business;
 using SuperUserWeb.Business.Interfaces;
 using SuperUserWeb.Data;
 using SuperUserWeb.Domain.Enums;
+using SuperUserWeb.Models.RoomViewModels;
 using Room = SuperUserWeb.Domain.Room;
 
 namespace SuperUserWeb.Controllers
@@ -50,7 +52,13 @@ namespace SuperUserWeb.Controllers
         }
 
         // GET: Room/Details/5
-        public async Task<IActionResult> Details(string id)
+        // GET: Room/Details/5/guestId
+        // GET: Room/Details/guestid
+        // GET: guestId
+        // GET: Room/Index/guestId
+        // GET: Room?guestId
+        [Route("details/{id}/{guestId}")]
+        public async Task<IActionResult> Details(string id, string guestId)
         {
             if (id == null)
             {
@@ -77,7 +85,7 @@ namespace SuperUserWeb.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Description,Size")] Room room)
+        public async Task<IActionResult> Create([Bind("Name,Description,Size")] RoomViewModel room)
         {
             if (ModelState.IsValid)
             {
@@ -101,7 +109,17 @@ namespace SuperUserWeb.Controllers
             {
                 return NotFound();
             }
-            return View(room);
+
+            var roomVm = Mapper.Map<Room, RoomViewModel>(room);
+            //var roomVm = new RoomViewModel
+            //{
+            //    Name = room.Name, 
+            //    Description = room.Description, 
+            //    Id = room.Id, 
+            //    Size = room.Size
+            //};
+
+            return View(roomVm);
         }
 
         // POST: Room/Edit/5
@@ -109,13 +127,13 @@ namespace SuperUserWeb.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Name,Description,Size,Id")] Room room)
+        public async Task<IActionResult> Edit(string id, [Bind("Name,Description,Size,Id")] RoomViewModel room)
         {
             if (id != room.Id)
             {
                 return NotFound();
             }
-
+            ModelState.ClearValidationState();
             if (ModelState.IsValid)
             {
                 try

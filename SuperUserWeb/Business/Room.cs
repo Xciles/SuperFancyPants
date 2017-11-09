@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using SuperUserWeb.Business.Interfaces;
 using SuperUserWeb.Data;
 using SuperUserWeb.Domain.Enums;
+using SuperUserWeb.Models.RoomViewModels;
 
 namespace SuperUserWeb.Business
 {
@@ -18,13 +19,19 @@ namespace SuperUserWeb.Business
             _context = context;
         }
 
-        public async Task CreatePost(Domain.Room room)
+        public async Task CreatePost(RoomViewModel room)
         {
-            room.CreatedDate = DateTime.UtcNow;
-            room.ModifiedDate = DateTime.UtcNow;
-            room.State = EState.Active;
+            var dbRoom = new Domain.Room
+            {
+                CreatedDate = DateTime.UtcNow,
+                ModifiedDate = DateTime.UtcNow,
+                State = EState.Active,
+                Name = room.Name, 
+                Description = room.Description, 
+                Size = room.Size
+            };
 
-            _context.Set<Domain.Room>().Add(room);
+            _context.Set<Domain.Room>().Add(dbRoom);
             await _context.SaveChangesAsync();
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -63,6 +64,12 @@ namespace SuperUserWeb
             services.AddTransient<IRoom, Business.Room>();
 
             services.AddMvc();
+
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<Domain.Room, Models.RoomViewModels.RoomViewModel>()
+                    .ForMember(vm => vm.SizeAsInt, room => room.MapFrom(r => Convert.ToInt32(r.Size.ToString("D"))));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using SuperUserWeb.Domain.Enums;
 
 namespace SuperUserWeb.Domain

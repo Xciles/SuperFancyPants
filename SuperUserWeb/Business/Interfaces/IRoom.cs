@@ -1,9 +1,10 @@
 ﻿using System.Threading.Tasks;
+using SuperUserWeb.Models.RoomViewModels;
 
 namespace SuperUserWeb.Business.Interfaces
 {
     public interface IRoom
     {
-        Task CreatePost(Domain.Room room);
+        Task CreatePost(RoomViewModel room);
     }
 }
