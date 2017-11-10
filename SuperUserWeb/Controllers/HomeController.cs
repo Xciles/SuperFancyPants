@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using SuperUserWeb.Models;
+using SuperUserWeb.Utils;
 
 namespace SuperUserWeb.Controllers
 {
@@ -24,7 +25,7 @@ namespace SuperUserWeb.Controllers
 
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             _logger.LogInformation(_localizer["Hello"]);
 
@@ -34,6 +35,8 @@ namespace SuperUserWeb.Controllers
             var hello = loc["Hello"];
 
             _logger.LogInformation(hello);
+
+            await SendGridMailer.SendMessage("xciles@gmail.com", "Hallo", "Hallo een test berichtje.");
 
             return View();
         }

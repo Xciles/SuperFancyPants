@@ -133,7 +133,6 @@ namespace SuperUserWeb.Controllers
             {
                 return NotFound();
             }
-            ModelState.ClearValidationState();
             if (ModelState.IsValid)
             {
                 try
