@@ -10,7 +10,7 @@ namespace SuperUserWeb.Data
     {
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Booking> Bookings { get; set; }
-
+        
         public FancyDbContext(DbContextOptions<FancyDbContext> options)
             : base(options)
         {

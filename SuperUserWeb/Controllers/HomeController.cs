@@ -36,7 +36,7 @@ namespace SuperUserWeb.Controllers
 
             _logger.LogInformation(hello);
 
-            await SendGridMailer.SendMessage("xciles@gmail.com", "Hallo", "Hallo een test berichtje.");
+            //await SendGridMailer.SendMessage("xciles@gmail.com", "Hallo", "Hallo een test berichtje.");
 
             return View();
         }

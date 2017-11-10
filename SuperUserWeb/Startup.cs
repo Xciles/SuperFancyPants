@@ -60,6 +60,7 @@ namespace SuperUserWeb
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<StatisticsService>();
 
             services.AddTransient<IRoom, Business.Room>();
 

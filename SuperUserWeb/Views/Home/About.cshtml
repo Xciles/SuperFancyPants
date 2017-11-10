@@ -1,7 +1,28 @@
-﻿@{
+﻿@using SuperUserWeb.Services
+@inject StatisticsService StatsService
+
+@{
     ViewData["Title"] = "About";
 }
 <h2>@ViewData["Title"]</h2>
 <h3>@ViewData["Message"]</h3>
 
 <p>Use this area to provide additional information.</p>
+
+<address>
+    One Microsoft Way<br />
+    Redmond, WA 98052<br />
+    <abbr title="Phone">P:</abbr>
+    425.555.0100
+</address>
+
+<address>
+    <strong>Support:</strong><email mail-to="Support"></email><br />
+    <strong>Marketing:</strong><email mail-to="Marketing"></email>
+</address>
+
+<ul>
+    <li>Total Items: @StatsService.GetCount()</li>
+    <li>Completed: @StatsService.GetCompletedCount()</li>
+    <li>Avg. Priority: @StatsService.GetAveragePriority()</li>
+</ul>
